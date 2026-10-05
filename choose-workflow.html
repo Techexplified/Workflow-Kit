@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Workflow Kit - Choose a workflow</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://p.trellocdn.com/power-up.min.js"></script>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        background-color: #ffffff;
+        color: #0f172a;
+        padding: 12px 16px;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      #container {
+        width: 100%;
+        max-width: 320px;
+        margin: 0 auto;
+      }
+
+      .header-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 12px;
+      }
+
+      .brand-group {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .brand-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #7C3AED;
+      }
+
+      .brand-title {
+        font-size: 15px;
+        font-weight: 700;
+        color: #1E1B4B;
+        letter-spacing: -0.01em;
+      }
+
+      .close-button {
+        background: transparent;
+        border: none;
+        width: 24px;
+        height: 24px;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        color: #475569;
+        transition: background-color 0.15s ease, color 0.15s ease;
+      }
+
+      .close-button:hover {
+        background-color: #F1F5F9;
+        color: #0F172A;
+      }
+
+      .main-heading {
+        font-size: 18px;
+        font-weight: 800;
+        color: #0F172A;
+        letter-spacing: -0.02em;
+        margin-bottom: 4px;
+      }
+
+      .subtext {
+        font-size: 12px;
+        line-height: 1.45;
+        color: #475569;
+        margin-bottom: 14px;
+      }
+
+      .template-list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .template-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 14px;
+        border-radius: 12px;
+        border: 1px solid transparent;
+        cursor: pointer;
+        text-decoration: none;
+        user-select: none;
+        transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+      }
+
+      .template-row:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+      }
+
+      .template-row:active {
+        transform: translateY(0);
+      }
+
+      .template-icon-box {
+        width: 44px;
+        height: 44px;
+        min-width: 44px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+      }
+
+      .template-info {
+        flex: 1;
+        min-width: 0;
+      }
+
+      .template-title {
+        font-size: 14px;
+        font-weight: 700;
+        color: #0F172A;
+        margin-bottom: 2px;
+        line-height: 1.2;
+      }
+
+      .template-description {
+        font-size: 11.5px;
+        line-height: 1.35;
+        color: #475569;
+      }
+
+      .template-chevron {
+        color: #334155;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding-left: 2px;
+      }
+
+      .bottom-row {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 14px;
+        padding-top: 2px;
+      }
+
+      .cancel-button {
+        background-color: #EEF2F6;
+        border: 1px solid #E2E8F0;
+        color: #334155;
+        padding: 6px 16px;
+        border-radius: 6px;
+        font-size: 12px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+      }
+
+      .cancel-button:hover {
+        background-color: #E2E8F0;
+        color: #0F172A;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="container">
+      <!-- Header Row -->
+      <div class="header-row">
+        <div class="brand-group">
+          <div class="brand-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M21 4.5v12.2a1 1 0 0 1-1.38.93l-5.62-2.34v-8.58l5.62-2.34A1 1 0 0 1 21 4.5zM12 7H4a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h2v4a1 1 0 0 0 1.55.83l3.45-2.3A1 1 0 0 0 12 15.7V7z"/>
+            </svg>
+          </div>
+          <span class="brand-title">Workflow Kit</span>
+        </div>
+        <button id="close-btn" class="close-button" aria-label="Close" title="Close">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Heading -->
+      <h1 class="main-heading">Choose a workflow</h1>
+      <p class="subtext">Set up a structured workflow for this card and get a pre-built checklist based on your template.</p>
+
+      <!-- Dynamic Template List -->
+      <div id="template-list" class="template-list"></div>
+
+      <!-- Bottom Actions -->
+      <div class="bottom-row">
+        <button id="cancel-btn" class="cancel-button">Cancel</button>
+      </div>
+    </div>
+
+    <script type="module" src="/src/choose-workflow.js"></script>
+  </body>
+</html>
