@@ -9,35 +9,16 @@ const ICON_URL = 'https://cdn.jsdelivr.net/npm/lucide-static@latest/icons/megaph
 
 window.TrelloPowerUp.initialize(
   {
-    'card-buttons': function (t, options) {
-      return [
-        {
-          icon: ICON_URL,
-          text: 'Workflow Kit',
-          callback: function (t) {
-            return t.modal({
-              title: 'Workflow Kit',
-              url: t.signUrl('./choose-workflow.html'),
-              accentColor: '#7C3AED',
-              height: 520,
-              fullscreen: false,
-            });
-          },
-        },
-      ];
-    },
     'board-buttons': function (t, options) {
       return [
         {
           icon: ICON_URL,
           text: 'Workflow Kit',
           callback: function (t) {
-            return t.modal({
+            return t.popup({
               title: 'Workflow Kit',
               url: t.signUrl('./choose-workflow.html'),
-              accentColor: '#7C3AED',
-              height: 520,
-              fullscreen: false,
+              height: 420,
             });
           },
         },

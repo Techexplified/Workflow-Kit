@@ -1,17 +1,23 @@
+import { TRELLO_APP_KEY, TRELLO_APP_NAME, TRELLO_APP_AUTHOR } from './config.js';
+import { createListsForTemplate } from './list-creator.js';
 import { workflowTemplates } from './workflow-templates.js';
 
 /* global TrelloPowerUp */
 const t =
   typeof window.TrelloPowerUp !== 'undefined' && window.TrelloPowerUp.iframe
-    ? window.TrelloPowerUp.iframe()
+    ? window.TrelloPowerUp.iframe({
+        appKey: TRELLO_APP_KEY,
+        appName: TRELLO_APP_NAME,
+        appAuthor: TRELLO_APP_AUTHOR,
+      })
     : null;
 
 function closePopup() {
   if (t) {
-    if (typeof t.closeModal === 'function') {
-      t.closeModal();
-    } else if (typeof t.closePopup === 'function') {
+    if (typeof t.closePopup === 'function') {
       t.closePopup();
+    } else if (typeof t.closeModal === 'function') {
+      t.closeModal();
     }
   } else {
     window.close();
@@ -42,6 +48,76 @@ const SVG_ICONS = {
     </svg>
   `,
 };
+
+function showLoadingState(message) {
+  const listContainer = document.getElementById('template-list');
+  if (!listContainer) return;
+
+  listContainer.innerHTML = `
+    <div class="state-container">
+      <div class="spinner"></div>
+      <div class="state-text">${message}</div>
+      <div class="state-subtext">Creating lists on your board via Trello API...</div>
+    </div>
+  `;
+
+  if (t && typeof t.sizeTo === 'function') {
+    t.sizeTo('#container').catch(() => {});
+  }
+}
+
+function showErrorState(message, template) {
+  const listContainer = document.getElementById('template-list');
+  if (!listContainer) return;
+
+  listContainer.innerHTML = `
+    <div class="state-container">
+      <div class="error-icon-box">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="8" x2="12" y2="12"></line>
+          <line x1="12" y1="16" x2="12.01" y2="16"></line>
+        </svg>
+      </div>
+      <div class="state-text">${message}</div>
+      <button id="retry-btn" class="retry-button">Try Again</button>
+    </div>
+  `;
+
+  const retryBtn = document.getElementById('retry-btn');
+  if (retryBtn) {
+    retryBtn.addEventListener('click', () => {
+      handleTemplateSelect(template);
+    });
+  }
+
+  if (t && typeof t.sizeTo === 'function') {
+    t.sizeTo('#container').catch(() => {});
+  }
+}
+
+async function handleTemplateSelect(template) {
+  showLoadingState(`Setting up your ${template.title} workflow…`);
+  try {
+    const result = await createListsForTemplate(t, template);
+    let message;
+    if (result.created.length === 0) {
+      message = 'All lists for this workflow already exist on this board.';
+    } else if (result.skipped.length > 0) {
+      message = `Created ${result.created.length} list(s). ${result.skipped.length} already existed and were skipped.`;
+    } else {
+      message = `Created ${result.created.length} list(s) for your ${template.title} workflow.`;
+    }
+    if (t && typeof t.alert === 'function') {
+      t.alert({ message, display: 'success', duration: 6 });
+    }
+    closePopup();
+  } catch (err) {
+    console.error('List creation failed:', err);
+    showErrorState('Something went wrong creating your lists. Try again.', template);
+    // stay open, don't close popup on failure, so the user can retry
+  }
+}
 
 function renderTemplates() {
   const listContainer = document.getElementById('template-list');
@@ -99,9 +175,7 @@ function renderTemplates() {
 
     // Handle template selection
     row.addEventListener('click', () => {
-      console.log('workflow selected:', template.id);
-      // TODO: generate pre-built checklist for this card based on the selected template, once backend exists
-      closePopup();
+      handleTemplateSelect(template);
     });
 
     listContainer.appendChild(row);
