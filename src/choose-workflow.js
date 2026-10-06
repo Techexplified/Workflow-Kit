@@ -191,7 +191,6 @@ function renderTemplates() {
     const row = document.createElement('div');
     row.className = 'template-row';
     row.style.backgroundColor = template.rowBg;
-    row.style.borderColor = template.iconBg;
 
     // Left icon container
     const iconBox = document.createElement('div');
@@ -246,11 +245,6 @@ function renderTemplates() {
 
 document.addEventListener('DOMContentLoaded', () => {
   renderTemplates();
-
-  const closeBtn = document.getElementById('close-btn');
-  if (closeBtn) {
-    closeBtn.addEventListener('click', closePopup);
-  }
 
   const cancelBtn = document.getElementById('cancel-btn');
   if (cancelBtn) {
