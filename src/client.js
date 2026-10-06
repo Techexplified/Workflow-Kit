@@ -15,10 +15,12 @@ window.TrelloPowerUp.initialize(
           icon: ICON_URL,
           text: 'Workflow Kit',
           callback: function (t) {
-            return t.popup({
+            return t.modal({
               title: 'Workflow Kit',
               url: t.signUrl('./choose-workflow.html'),
-              height: 420,
+              accentColor: '#7C3AED',
+              height: 520,
+              fullscreen: false,
             });
           },
         },
@@ -30,10 +32,12 @@ window.TrelloPowerUp.initialize(
           icon: ICON_URL,
           text: 'Workflow Kit',
           callback: function (t) {
-            return t.popup({
+            return t.modal({
               title: 'Workflow Kit',
               url: t.signUrl('./choose-workflow.html'),
-              height: 420,
+              accentColor: '#7C3AED',
+              height: 520,
+              fullscreen: false,
             });
           },
         },

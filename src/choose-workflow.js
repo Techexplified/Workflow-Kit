@@ -7,8 +7,12 @@ const t =
     : null;
 
 function closePopup() {
-  if (t && typeof t.closePopup === 'function') {
-    t.closePopup();
+  if (t) {
+    if (typeof t.closeModal === 'function') {
+      t.closeModal();
+    } else if (typeof t.closePopup === 'function') {
+      t.closePopup();
+    }
   } else {
     window.close();
   }
