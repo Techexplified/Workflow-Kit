@@ -24,6 +24,21 @@ window.TrelloPowerUp.initialize(
         },
       ];
     },
+    'board-buttons': function (t, options) {
+      return [
+        {
+          icon: ICON_URL,
+          text: 'Workflow Kit',
+          callback: function (t) {
+            return t.popup({
+              title: 'Workflow Kit',
+              url: t.signUrl('./choose-workflow.html'),
+              height: 420,
+            });
+          },
+        },
+      ];
+    },
   },
   {
     appKey: appKey,
