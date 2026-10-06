@@ -246,11 +246,6 @@ function renderTemplates() {
 document.addEventListener('DOMContentLoaded', () => {
   renderTemplates();
 
-  const cancelBtn = document.getElementById('cancel-btn');
-  if (cancelBtn) {
-    cancelBtn.addEventListener('click', closePopup);
-  }
-
   if (t && typeof t.render === 'function') {
     t.render(function () {
       if (typeof t.sizeTo === 'function') {

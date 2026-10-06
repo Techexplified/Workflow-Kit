@@ -158,30 +158,6 @@
         color: #0f172a;
       }
 
-      .bottom-row {
-        display: flex;
-        justify-content: flex-end;
-        margin-top: 24px;
-        padding-top: 16px;
-      }
-
-      .cancel-button {
-        background-color: #f1f5f9;
-        border: none;
-        color: #475569;
-        padding: 9px 20px;
-        border-radius: 8px;
-        font-size: 13px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: background-color 0.15s ease, color 0.15s ease;
-      }
-
-      .cancel-button:hover {
-        background-color: #e2e8f0;
-        color: #0f172a;
-      }
-
       /* Loading & Error States */
       .state-container {
         display: flex;
@@ -341,11 +317,6 @@
 
       <!-- Dynamic Template List -->
       <div id="template-list" class="template-list"></div>
-
-      <!-- Bottom Actions -->
-      <div class="bottom-row">
-        <button id="cancel-btn" class="cancel-button">Cancel</button>
-      </div>
     </div>
 
     <script type="module" src="/src/choose-workflow.js"></script>
