@@ -17,7 +17,7 @@ export const workflowTemplates = [
     accentColor: '#2563EB',
     title: 'Real Estate',
     description: 'Manage buyers, sellers, and properties with a structured workflow.',
-    lists: ['New Leads', 'Property Viewing', 'Offer Submitted', 'Under Contract', 'Closed'] // TODO: confirm exact names
+    lists: ['New Lead', 'Qualified', 'Property Search', 'Offer', 'Under Contract', 'Closing', 'Completed']
   },
   {
     id: 'events',
@@ -27,6 +27,6 @@ export const workflowTemplates = [
     accentColor: '#16A34A',
     title: 'Events',
     description: 'Plan and execute events with ease.',
-    lists: ['Ideas', 'Planning', 'Vendor Booking', 'Day-Of Logistics', 'Post-Event'] // TODO: confirm exact names
+    lists: ['Planning', 'Logistics', 'Marketing', 'Execution', 'Post-Event', 'Completed']
   }
 ];

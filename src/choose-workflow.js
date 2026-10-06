@@ -1,5 +1,5 @@
 import { TRELLO_APP_KEY, TRELLO_APP_NAME, TRELLO_APP_AUTHOR } from './config.js';
-import { createListsForTemplate } from './list-creator.js';
+import { getOpenLists, applyTemplate } from './list-creator.js';
 import { workflowTemplates } from './workflow-templates.js';
 
 /* global TrelloPowerUp */
@@ -57,7 +57,7 @@ function showLoadingState(message) {
     <div class="state-container">
       <div class="spinner"></div>
       <div class="state-text">${message}</div>
-      <div class="state-subtext">Creating lists on your board via Trello API...</div>
+      <div class="state-subtext">Updating lists on your board via Trello API...</div>
     </div>
   `;
 
@@ -87,7 +87,11 @@ function showErrorState(message, template) {
   const retryBtn = document.getElementById('retry-btn');
   if (retryBtn) {
     retryBtn.addEventListener('click', () => {
-      handleTemplateSelect(template);
+      if (template) {
+        handleTemplateSelect(template);
+      } else {
+        showTemplateListState();
+      }
     });
   }
 
@@ -96,26 +100,84 @@ function showErrorState(message, template) {
   }
 }
 
+function showConfirmState({ message, onConfirm, onCancel }) {
+  const listContainer = document.getElementById('template-list');
+  if (!listContainer) return;
+
+  listContainer.innerHTML = `
+    <div class="state-container">
+      <div class="warning-icon-box">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/>
+          <line x1="12" y1="9" x2="12" y2="13"/>
+          <line x1="12" y1="17" x2="12.01" y2="17"/>
+        </svg>
+      </div>
+      <div class="confirm-message">${message}</div>
+      <div class="confirm-actions">
+        <button id="confirm-cancel-btn" class="secondary-button">Cancel</button>
+        <button id="confirm-continue-btn" class="continue-button">Continue</button>
+      </div>
+    </div>
+  `;
+
+  const cancelBtn = document.getElementById('confirm-cancel-btn');
+  if (cancelBtn) {
+    cancelBtn.addEventListener('click', onCancel);
+  }
+
+  const continueBtn = document.getElementById('confirm-continue-btn');
+  if (continueBtn) {
+    continueBtn.addEventListener('click', onConfirm);
+  }
+
+  if (t && typeof t.sizeTo === 'function') {
+    t.sizeTo('#container').catch(() => {});
+  }
+}
+
+function showTemplateListState() {
+  renderTemplates();
+  if (t && typeof t.sizeTo === 'function') {
+    t.sizeTo('#container').catch(() => {});
+  }
+}
+
 async function handleTemplateSelect(template) {
+  showLoadingState('Checking existing board lists…');
+  try {
+    const existingLists = await getOpenLists(t);
+
+    if (existingLists.length > 0) {
+      showConfirmState({
+        message: `This board already has ${existingLists.length} list${existingLists.length === 1 ? '' : 's'}. Applying the ${template.title} workflow will archive ${existingLists.length === 1 ? 'it' : 'them'} (cards inside will be archived too, not deleted) and create ${template.lists.length} new lists. Continue?`,
+        onConfirm: () => runApplyTemplate(template),
+        onCancel: () => showTemplateListState(),
+      });
+    } else {
+      runApplyTemplate(template);
+    }
+  } catch (err) {
+    console.error('Error fetching existing lists:', err);
+    showErrorState('Something went wrong checking your board. Try again.', template);
+  }
+}
+
+async function runApplyTemplate(template) {
   showLoadingState(`Setting up your ${template.title} workflow…`);
   try {
-    const result = await createListsForTemplate(t, template);
-    let message;
-    if (result.created.length === 0) {
-      message = 'All lists for this workflow already exist on this board.';
-    } else if (result.skipped.length > 0) {
-      message = `Created ${result.created.length} list(s). ${result.skipped.length} already existed and were skipped.`;
-    } else {
-      message = `Created ${result.created.length} list(s) for your ${template.title} workflow.`;
-    }
+    const result = await applyTemplate(t, template);
+    const message =
+      result.archivedCount > 0
+        ? `Archived ${result.archivedCount} existing list(s) and created ${result.createdCount} new list(s) for your ${template.title} workflow.`
+        : `Created ${result.createdCount} list(s) for your ${template.title} workflow.`;
     if (t && typeof t.alert === 'function') {
       t.alert({ message, display: 'success', duration: 6 });
     }
     closePopup();
   } catch (err) {
-    console.error('List creation failed:', err);
-    showErrorState('Something went wrong creating your lists. Try again.', template);
-    // stay open, don't close popup on failure, so the user can retry
+    console.error('Template apply failed:', err);
+    showErrorState('Something went wrong setting up your workflow. Try again.', template);
   }
 }
 

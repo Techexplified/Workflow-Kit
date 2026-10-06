@@ -1,26 +1,42 @@
 import { TRELLO_APP_KEY } from './config.js';
 
-export async function createListsForTemplate(t, template) {
+export async function getOpenLists(t) {
   const restApi = await t.getRestApi();
-
   if (!(await restApi.isAuthorized())) {
     await restApi.authorize({ scope: 'read,write' });
   }
   const token = await restApi.getToken();
   const board = await t.board('id');
 
-  // Avoid creating duplicates if this template (or lists with the same
-  // names) already exist on the board.
-  const existingListsRes = await fetch(
-    `https://api.trello.com/1/boards/${board.id}/lists?key=${TRELLO_APP_KEY}&token=${token}&fields=name`
+  const res = await fetch(
+    `https://api.trello.com/1/boards/${board.id}/lists?key=${TRELLO_APP_KEY}&token=${token}&filter=open&fields=name`
   );
-  const existingLists = await existingListsRes.json();
-  const existingNames = new Set(existingLists.map(l => l.name.toLowerCase()));
+  if (!res.ok) throw new Error(`Failed to fetch existing lists: ${res.status}`);
+  return res.json(); // array of { id, name }
+}
 
-  const toCreate = template.lists.filter(name => !existingNames.has(name.toLowerCase()));
-  const skipped = template.lists.filter(name => existingNames.has(name.toLowerCase()));
+export async function applyTemplate(t, template) {
+  const restApi = await t.getRestApi();
+  const token = await restApi.getToken();
+  const board = await t.board('id');
 
-  for (const name of toCreate) {
+  const existingLists = await getOpenLists(t);
+
+  // Archive (Trello has no true delete for lists) every currently open list
+  for (const list of existingLists) {
+    const res = await fetch(
+      `https://api.trello.com/1/lists/${list.id}?key=${TRELLO_APP_KEY}&token=${token}`,
+      {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ closed: true })
+      }
+    );
+    if (!res.ok) throw new Error(`Failed to archive list "${list.name}": ${res.status}`);
+  }
+
+  // Create the new template's lists, in order
+  for (const name of template.lists) {
     const res = await fetch(
       `https://api.trello.com/1/lists?key=${TRELLO_APP_KEY}&token=${token}`,
       {
@@ -29,13 +45,8 @@ export async function createListsForTemplate(t, template) {
         body: JSON.stringify({ name, idBoard: board.id, pos: 'bottom' })
       }
     );
-    if (!res.ok) {
-      throw new Error(`Failed to create list "${name}": ${res.status}`);
-    }
-    // Sequential, not Promise.all — so lists land on the board in the
-    // same left-to-right order as the template, since Trello appends
-    // each new list to the current end of the board.
+    if (!res.ok) throw new Error(`Failed to create list "${name}": ${res.status}`);
   }
 
-  return { created: toCreate, skipped };
+  return { archivedCount: existingLists.length, createdCount: template.lists.length };
 }
