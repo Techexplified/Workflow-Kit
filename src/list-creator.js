@@ -36,6 +36,7 @@ export async function applyTemplate(t, template) {
   }
 
   // Create the new template's lists, in order
+  const createdListIds = [];
   for (const name of template.lists) {
     const res = await fetch(
       `https://api.trello.com/1/lists?key=${TRELLO_APP_KEY}&token=${token}`,
@@ -46,7 +47,13 @@ export async function applyTemplate(t, template) {
       }
     );
     if (!res.ok) throw new Error(`Failed to create list "${name}": ${res.status}`);
+    const list = await res.json();
+    createdListIds.push(list.id);
   }
 
-  return { archivedCount: existingLists.length, createdCount: template.lists.length };
+  return {
+    archivedCount: existingLists.length,
+    createdCount: template.lists.length,
+    firstListId: createdListIds[0]
+  };
 }
