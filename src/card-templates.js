@@ -302,15 +302,15 @@ async function handleCreateCard(template) {
   try {
     const urlParams = new URLSearchParams(window.location.search);
     let firstListId = urlParams.get('firstListId') || null;
-
-    if (!firstListId && t && typeof t.get === 'function') {
-      firstListId = await t.get('board', 'shared', 'activeWorkflowFirstListId');
+    if (firstListId === 'undefined' || firstListId === 'null' || (typeof firstListId === 'string' && firstListId.trim() === '')) {
+      firstListId = null;
     }
 
-    if (!firstListId && t) {
-      const openLists = await getOpenLists(t);
-      if (openLists && openLists.length > 0) {
-        firstListId = openLists[0].id;
+    if (!firstListId && t && typeof t.get === 'function') {
+      try {
+        firstListId = await t.get('board', 'shared', 'activeWorkflowFirstListId');
+      } catch (e) {
+        console.warn('Could not read activeWorkflowFirstListId:', e);
       }
     }
 
@@ -335,6 +335,7 @@ async function handleCreateCard(template) {
     if (backBtn) backBtn.disabled = false;
 
     if (errorContainer) {
+      const displayMsg = err && err.message ? err.message : 'Failed to create card. Please try again.';
       errorContainer.innerHTML = `
         <div class="inline-error-box">
           <div class="inline-error-content">
@@ -343,7 +344,7 @@ async function handleCreateCard(template) {
               <line x1="12" y1="8" x2="12" y2="12"></line>
               <line x1="12" y1="16" x2="12.01" y2="16"></line>
             </svg>
-            <span>Failed to create card. Please try again.</span>
+            <span>${displayMsg}</span>
           </div>
           <button id="retry-link-btn" class="retry-link-btn">Retry</button>
         </div>
