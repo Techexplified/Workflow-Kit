@@ -1,6 +1,7 @@
 import { TRELLO_APP_KEY, TRELLO_APP_NAME, TRELLO_APP_AUTHOR } from './config.js';
 import { checklistTemplatesByWorkflow } from './checklist-templates.js';
 import { createCardWithChecklist } from './card-creator.js';
+import { getOpenLists } from './list-creator.js';
 
 /* global TrelloPowerUp */
 const t =
@@ -12,19 +13,19 @@ const t =
       })
     : null;
 
-function closePopup() {
+function closeView() {
   if (t) {
-    if (typeof t.closePopup === 'function') {
-      t.closePopup();
-    } else if (typeof t.closeModal === 'function') {
+    if (typeof t.closeModal === 'function') {
       t.closeModal();
+    } else if (typeof t.closePopup === 'function') {
+      t.closePopup();
     }
   } else {
     window.close();
   }
 }
 
-function resizePopup() {
+function resizeView() {
   if (t && typeof t.sizeTo === 'function') {
     t.sizeTo('#container').catch(() => {});
   }
@@ -125,8 +126,8 @@ function renderListView(workflowId) {
     `;
 
     const cancelBtn = document.getElementById('cancel-btn');
-    if (cancelBtn) cancelBtn.addEventListener('click', closePopup);
-    resizePopup();
+    if (cancelBtn) cancelBtn.addEventListener('click', closeView);
+    resizeView();
     return;
   }
 
@@ -199,10 +200,10 @@ function renderListView(workflowId) {
 
   const cancelBtn = document.getElementById('cancel-btn');
   if (cancelBtn) {
-    cancelBtn.addEventListener('click', closePopup);
+    cancelBtn.addEventListener('click', closeView);
   }
 
-  resizePopup();
+  resizeView();
 }
 
 function renderPreviewView(template, workflowId) {
@@ -279,7 +280,7 @@ function renderPreviewView(template, workflowId) {
     });
   }
 
-  resizePopup();
+  resizeView();
 }
 
 async function handleCreateCard(template) {
@@ -299,10 +300,19 @@ async function handleCreateCard(template) {
   if (backBtn) backBtn.disabled = true;
 
   try {
-    const firstListId =
-      t && typeof t.get === 'function'
-        ? await t.get('board', 'shared', 'activeWorkflowFirstListId')
-        : null;
+    const urlParams = new URLSearchParams(window.location.search);
+    let firstListId = urlParams.get('firstListId') || null;
+
+    if (!firstListId && t && typeof t.get === 'function') {
+      firstListId = await t.get('board', 'shared', 'activeWorkflowFirstListId');
+    }
+
+    if (!firstListId && t) {
+      const openLists = await getOpenLists(t);
+      if (openLists && openLists.length > 0) {
+        firstListId = openLists[0].id;
+      }
+    }
 
     await createCardWithChecklist(t, firstListId, template);
 
@@ -314,7 +324,7 @@ async function handleCreateCard(template) {
       });
     }
 
-    closePopup();
+    closeView();
   } catch (err) {
     console.error('Failed to create card with checklist:', err);
 
@@ -347,18 +357,20 @@ async function handleCreateCard(template) {
       }
     }
 
-    resizePopup();
+    resizeView();
   }
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
   const closeBtn = document.getElementById('close-btn');
   if (closeBtn) {
-    closeBtn.addEventListener('click', closePopup);
+    closeBtn.addEventListener('click', closeView);
   }
 
-  let workflowId = 'marketing';
-  if (t && typeof t.get === 'function') {
+  const urlParams = new URLSearchParams(window.location.search);
+  let workflowId = urlParams.get('workflowId');
+
+  if (!workflowId && t && typeof t.get === 'function') {
     try {
       const storedId = await t.get('board', 'shared', 'activeWorkflowId');
       if (storedId) workflowId = storedId;
@@ -367,11 +379,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
 
+  if (!workflowId) {
+    workflowId = 'marketing';
+  }
+
   renderListView(workflowId);
 
   if (t && typeof t.render === 'function') {
     t.render(() => {
-      resizePopup();
+      resizeView();
     });
   }
 });

@@ -196,16 +196,8 @@ async function runApplyTemplate(template) {
     showSuccessState('Workflow created!');
     await new Promise((resolve) => setTimeout(resolve, 1200));
 
-    if (t && typeof t.closePopup === 'function') {
-      t.closePopup();
-    }
-    if (t && typeof t.popup === 'function') {
-      t.popup({
-        title: 'Create a card with a template',
-        url: typeof t.signUrl === 'function' ? t.signUrl('./card-templates.html') : './card-templates.html',
-        height: 480,
-      });
-    }
+    const targetUrl = `./card-templates.html?workflowId=${encodeURIComponent(template.id)}&firstListId=${encodeURIComponent(result.firstListId || '')}`;
+    window.location.href = targetUrl;
   } catch (err) {
     console.error('Template apply failed:', err);
     showErrorState('Something went wrong setting up your workflow. Try again.', template);
