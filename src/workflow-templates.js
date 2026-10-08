@@ -7,7 +7,15 @@ export const workflowTemplates = [
     accentColor: '#7C3AED',
     title: 'Marketing',
     description: 'Plan campaigns, create content, and launch successful marketing initiatives.',
-    lists: ['Planning', 'Research', 'Creation', 'Review', 'Launch', 'Monitor & Optimize', 'Completed']
+    lists: [
+      'Planning',
+      'Research',
+      'Content Creation',
+      'Review & Approval',
+      'Launch / Execution',
+      'Monitor & Optimize',
+      'Completed'
+    ]
   },
   {
     id: 'real-estate',
@@ -17,7 +25,15 @@ export const workflowTemplates = [
     accentColor: '#2563EB',
     title: 'Real Estate',
     description: 'Manage buyers, sellers, and properties with a structured workflow.',
-    lists: ['New Lead', 'Qualified', 'Property Search', 'Offer', 'Under Contract', 'Closing', 'Completed']
+    lists: [
+      'New Lead',
+      'Qualified',
+      'Property Search',
+      'Offer',
+      'Under Contract',
+      'Closing',
+      'Completed'
+    ]
   },
   {
     id: 'events',
@@ -27,6 +43,13 @@ export const workflowTemplates = [
     accentColor: '#16A34A',
     title: 'Events',
     description: 'Plan and execute events with ease.',
-    lists: ['Planning', 'Logistics', 'Marketing', 'Execution', 'Post-Event', 'Completed']
+    lists: [
+      'Planning',
+      'Logistics',
+      'Marketing',
+      'Execution',
+      'Post-Event',
+      'Completed'
+    ]
   }
 ];

@@ -1,6 +1,6 @@
 import { TRELLO_APP_KEY, TRELLO_APP_NAME, TRELLO_APP_AUTHOR } from './config.js';
-import { checklistTemplatesByWorkflow } from './checklist-templates.js';
-import { createCardWithChecklist } from './card-creator.js';
+import { checklistTemplatesByWorkflow, getChecklistForCategoryAndList } from './checklist-templates.js';
+import { addChecklistToExistingCard, createCardWithChecklist } from './card-creator.js';
 import { getOpenLists } from './list-creator.js';
 
 /* global TrelloPowerUp */
@@ -15,10 +15,10 @@ const t =
 
 function closeView() {
   if (t) {
-    if (typeof t.closeModal === 'function') {
-      t.closeModal();
-    } else if (typeof t.closePopup === 'function') {
+    if (typeof t.closePopup === 'function') {
       t.closePopup();
+    } else if (typeof t.closeModal === 'function') {
+      t.closeModal();
     }
   } else {
     window.close();
@@ -212,37 +212,100 @@ function getTemplateIcon(template) {
   return template.icon || '📋';
 }
 
-function updateBrandHeader(workflowId) {
-  const brandConfig = WORKFLOW_BRAND_CONFIG[workflowId];
+function updateBrandHeader(workflowId, cardContext) {
+  const brandConfig = WORKFLOW_BRAND_CONFIG[workflowId] || WORKFLOW_BRAND_CONFIG.marketing;
   const brandIconEl = document.querySelector('.brand-icon');
   if (brandConfig && brandIconEl) {
     brandIconEl.style.backgroundColor = brandConfig.bg;
     brandIconEl.style.color = brandConfig.color;
     brandIconEl.innerHTML = brandConfig.svg;
   }
+
+  const brandTitleEl = document.getElementById('brand-title');
+  if (brandTitleEl) {
+    brandTitleEl.textContent = cardContext ? 'Add Checklist' : 'Create a card with a template';
+  }
 }
 
-function renderListView(workflowId) {
+async function getCardAndListContext() {
+  if (!t) return null;
+  try {
+    let card = null;
+    if (typeof t.card === 'function') {
+      try {
+        card = await t.card('id', 'name', 'idList');
+      } catch (e) {
+        // Not in card context
+      }
+    }
+
+    if (!card || !card.id) return null;
+
+    let list = null;
+    if (typeof t.list === 'function') {
+      try {
+        list = await t.list('id', 'name');
+      } catch (e) {
+        // List context not directly supplied
+      }
+    }
+
+    let listIndex = 0;
+    let listName = list && list.name ? list.name : '';
+
+    if (!listName && typeof t.lists === 'function') {
+      try {
+        const boardLists = await t.lists('id', 'name');
+        if (Array.isArray(boardLists)) {
+          const foundIndex = boardLists.findIndex((l) => l.id === card.idList);
+          if (foundIndex >= 0) {
+            listIndex = foundIndex;
+            listName = boardLists[foundIndex].name;
+          }
+        }
+      } catch (e) {
+        console.warn('Could not fetch board lists:', e);
+      }
+    }
+
+    return {
+      cardId: card.id,
+      cardName: card.name,
+      listId: card.idList,
+      listName: listName || 'Planning',
+      listIndex: listIndex || 0,
+    };
+  } catch (err) {
+    console.warn('Error determining card context:', err);
+    return null;
+  }
+}
+
+function renderListView(workflowId, cardContext) {
   const container = document.getElementById('view-container');
   if (!container) return;
 
-  updateBrandHeader(workflowId);
+  updateBrandHeader(workflowId, cardContext);
 
   const headerSubtext = document.getElementById('header-subtext');
   if (headerSubtext) {
-    headerSubtext.textContent = 'Choose a template to get a pre-built checklist and start faster.';
+    if (cardContext && cardContext.listName) {
+      headerSubtext.innerHTML = `Choose a category below to add the <strong>${cardContext.listName}</strong> checklist to this card.`;
+    } else {
+      headerSubtext.textContent = 'Choose a category to get a pre-built checklist and start faster.';
+    }
     headerSubtext.style.display = 'block';
   }
 
-  const templates = (workflowId && checklistTemplatesByWorkflow[workflowId]) || [];
+  const categories = (workflowId && checklistTemplatesByWorkflow[workflowId]) || [];
   const workflowTitle =
     WORKFLOW_TITLES[workflowId] ||
     (workflowId ? workflowId.charAt(0).toUpperCase() + workflowId.slice(1) : 'Workflow');
 
-  if (templates.length === 0) {
+  if (categories.length === 0) {
     container.innerHTML = `
       <div class="empty-state">
-        No card templates available for this workflow yet.
+        No checklist templates available for this workflow yet.
       </div>
       <div class="footer-row">
         <div class="footer-info">
@@ -263,8 +326,12 @@ function renderListView(workflowId) {
     return;
   }
 
+  const headingText = cardContext
+    ? `${workflowTitle} Checklists (${categories.length} Categories)`
+    : `${workflowTitle} Templates (${categories.length})`;
+
   container.innerHTML = `
-    <div class="section-heading">${workflowTitle} Templates (${templates.length})</div>
+    <div class="section-heading">${headingText}</div>
     <div class="template-grid" id="template-grid"></div>
     <div class="footer-row">
       <div class="footer-info">
@@ -280,12 +347,21 @@ function renderListView(workflowId) {
   `;
 
   const grid = document.getElementById('template-grid');
-  templates.forEach((template) => {
-    const theme = CARD_THEMES[template.id] || {
+  categories.forEach((category) => {
+    const theme = CARD_THEMES[category.id] || {
       bg: '#F8FAFC',
       border: '#E2E8F0',
-      iconBg: template.iconBg || '#EDE9FE',
+      iconBg: category.iconBg || '#EDE9FE',
     };
+
+    const targetListName = cardContext ? cardContext.listName : 'Planning';
+    const targetListIndex = cardContext ? cardContext.listIndex : 0;
+    const resolved = getChecklistForCategoryAndList(
+      workflowId,
+      category.id,
+      targetListName,
+      targetListIndex
+    );
 
     const card = document.createElement('div');
     card.className = 'card-item';
@@ -294,19 +370,23 @@ function renderListView(workflowId) {
 
     const iconBox = document.createElement('div');
     iconBox.className = 'card-icon-box';
-    iconBox.style.backgroundColor = template.iconBg || theme.iconBg;
-    iconBox.innerHTML = getTemplateIcon(template);
+    iconBox.style.backgroundColor = category.iconBg || theme.iconBg;
+    iconBox.innerHTML = getTemplateIcon(category);
 
     const info = document.createElement('div');
     info.className = 'card-info';
 
     const title = document.createElement('div');
     title.className = 'card-title';
-    title.textContent = template.title;
+    title.textContent = category.title;
 
     const desc = document.createElement('div');
     desc.className = 'card-desc';
-    desc.textContent = template.description;
+    if (cardContext && resolved.listKey) {
+      desc.textContent = `${resolved.listKey} checklist · ${resolved.checklist.length} items`;
+    } else {
+      desc.textContent = category.description;
+    }
 
     info.appendChild(title);
     info.appendChild(desc);
@@ -324,7 +404,7 @@ function renderListView(workflowId) {
     card.appendChild(chevron);
 
     card.addEventListener('click', () => {
-      renderPreviewView(template, workflowId);
+      renderPreviewView(category, resolved, workflowId, cardContext);
     });
 
     grid.appendChild(card);
@@ -338,7 +418,7 @@ function renderListView(workflowId) {
   resizeView();
 }
 
-function renderPreviewView(template, workflowId) {
+function renderPreviewView(category, resolved, workflowId, cardContext) {
   const container = document.getElementById('view-container');
   if (!container) return;
 
@@ -347,26 +427,30 @@ function renderPreviewView(template, workflowId) {
     headerSubtext.style.display = 'none';
   }
 
-  const checklistItems = template.checklist || [];
-  const theme = CARD_THEMES[template.id] || {
+  const checklistItems = resolved.checklist || [];
+  const theme = CARD_THEMES[category.id] || {
     bg: '#F8FAFC',
     border: '#E2E8F0',
-    iconBg: template.iconBg || '#EDE9FE',
+    iconBg: category.iconBg || '#EDE9FE',
   };
 
   const brandConfig = WORKFLOW_BRAND_CONFIG[workflowId] || { btnBg: '#7c3aed' };
+  const actionBtnText = cardContext ? 'Add Checklist' : 'Create Card';
+  const headingTitle = resolved.listKey
+    ? `${resolved.listKey} Checklist (${checklistItems.length})`
+    : `Checklist (${checklistItems.length})`;
 
   container.innerHTML = `
     <div class="preview-container">
       <div class="preview-badge-row">
-        <div class="preview-badge-icon" style="background-color: ${template.iconBg || theme.iconBg};">
-          ${getTemplateIcon(template)}
+        <div class="preview-badge-icon" style="background-color: ${category.iconBg || theme.iconBg};">
+          ${getTemplateIcon(category)}
         </div>
-        <div class="preview-badge-text">${template.title}</div>
+        <div class="preview-badge-text">${category.title}</div>
       </div>
 
       <div class="preview-heading-group">
-        <div class="section-heading" style="margin-bottom: 2px;">Checklist (${checklistItems.length})</div>
+        <div class="section-heading" style="margin-bottom: 2px;">${headingTitle}</div>
         <div class="preview-subtext">This checklist will be added to your card.</div>
       </div>
 
@@ -383,8 +467,8 @@ function renderPreviewView(template, workflowId) {
         </svg>
         Back
       </button>
-      <button id="create-card-btn" class="create-card-button" style="background-color: ${brandConfig.btnBg};">
-        Create Card
+      <button id="action-btn" class="create-card-button" style="background-color: ${brandConfig.btnBg};">
+        ${actionBtnText}
       </button>
     </div>
   `;
@@ -403,73 +487,107 @@ function renderPreviewView(template, workflowId) {
   const backBtn = document.getElementById('back-btn');
   if (backBtn) {
     backBtn.addEventListener('click', () => {
-      renderListView(workflowId);
+      renderListView(workflowId, cardContext);
     });
   }
 
-  const createCardBtn = document.getElementById('create-card-btn');
-  if (createCardBtn) {
-    createCardBtn.addEventListener('click', () => {
-      handleCreateCard(template);
+  const actionBtn = document.getElementById('action-btn');
+  if (actionBtn) {
+    actionBtn.addEventListener('click', () => {
+      handleAction(category, resolved, cardContext);
     });
   }
 
   resizeView();
 }
 
-async function handleCreateCard(template) {
-  const createCardBtn = document.getElementById('create-card-btn');
+async function handleAction(category, resolved, cardContext) {
+  const actionBtn = document.getElementById('action-btn');
   const backBtn = document.getElementById('back-btn');
   const errorContainer = document.getElementById('inline-error-container');
 
   if (errorContainer) errorContainer.innerHTML = '';
 
-  if (createCardBtn) {
-    createCardBtn.disabled = true;
-    createCardBtn.innerHTML = `
+  const isAddingToCard = !!(cardContext && cardContext.cardId);
+
+  if (actionBtn) {
+    actionBtn.disabled = true;
+    actionBtn.innerHTML = `
       <div class="btn-spinner"></div>
-      <span>Creating Card…</span>
+      <span>${isAddingToCard ? 'Adding Checklist…' : 'Creating Card…'}</span>
     `;
   }
   if (backBtn) backBtn.disabled = true;
 
   try {
-    const urlParams = new URLSearchParams(window.location.search);
-    let firstListId = urlParams.get('firstListId') || null;
-    if (firstListId === 'undefined' || firstListId === 'null' || (typeof firstListId === 'string' && firstListId.trim() === '')) {
-      firstListId = null;
-    }
+    if (isAddingToCard) {
+      const checklistName = resolved.listKey
+        ? `${category.title} - ${resolved.listKey}`
+        : `${category.title}`;
 
-    if (!firstListId && t && typeof t.get === 'function') {
-      try {
-        firstListId = await t.get('board', 'shared', 'activeWorkflowFirstListId');
-      } catch (e) {
-        console.warn('Could not read activeWorkflowFirstListId:', e);
+      await addChecklistToExistingCard(
+        t,
+        cardContext.cardId,
+        checklistName,
+        resolved.checklist
+      );
+
+      if (t && typeof t.alert === 'function') {
+        t.alert({
+          message: `"${checklistName}" checklist added to card.`,
+          display: 'success',
+          duration: 5,
+        });
       }
-    }
+    } else {
+      const urlParams = new URLSearchParams(window.location.search);
+      let firstListId = urlParams.get('firstListId') || null;
+      if (
+        firstListId === 'undefined' ||
+        firstListId === 'null' ||
+        (typeof firstListId === 'string' && firstListId.trim() === '')
+      ) {
+        firstListId = null;
+      }
 
-    await createCardWithChecklist(t, firstListId, template);
+      if (!firstListId && t && typeof t.get === 'function') {
+        try {
+          firstListId = await t.get('board', 'shared', 'activeWorkflowFirstListId');
+        } catch (e) {
+          console.warn('Could not read activeWorkflowFirstListId:', e);
+        }
+      }
 
-    if (t && typeof t.alert === 'function') {
-      t.alert({
-        message: `"${template.title}" card created with checklist.`,
-        display: 'success',
-        duration: 6,
-      });
+      const templatePayload = {
+        title: category.title,
+        checklistTitle: resolved.listKey ? `${category.title} - ${resolved.listKey}` : 'Checklist',
+        checklist: resolved.checklist,
+      };
+
+      await createCardWithChecklist(t, firstListId, templatePayload);
+
+      if (t && typeof t.alert === 'function') {
+        t.alert({
+          message: `"${category.title}" card created with checklist.`,
+          display: 'success',
+          duration: 6,
+        });
+      }
     }
 
     closeView();
   } catch (err) {
-    console.error('Failed to create card with checklist:', err);
+    console.error('Failed to add checklist / create card:', err);
 
-    if (createCardBtn) {
-      createCardBtn.disabled = false;
-      createCardBtn.innerHTML = 'Create Card';
+    if (actionBtn) {
+      actionBtn.disabled = false;
+      actionBtn.innerHTML = isAddingToCard ? 'Add Checklist' : 'Create Card';
     }
     if (backBtn) backBtn.disabled = false;
 
     if (errorContainer) {
-      const displayMsg = err && err.message ? err.message : 'Failed to create card. Please try again.';
+      const displayMsg =
+        err && err.message ? err.message : 'Operation failed. Please try again.';
       errorContainer.innerHTML = `
         <div class="inline-error-box">
           <div class="inline-error-content">
@@ -487,7 +605,7 @@ async function handleCreateCard(template) {
       const retryLinkBtn = document.getElementById('retry-link-btn');
       if (retryLinkBtn) {
         retryLinkBtn.addEventListener('click', () => {
-          handleCreateCard(template);
+          handleAction(category, resolved, cardContext);
         });
       }
     }
@@ -518,7 +636,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     workflowId = 'marketing';
   }
 
-  renderListView(workflowId);
+  const cardContext = await getCardAndListContext();
+
+  renderListView(workflowId, cardContext);
 
   if (t && typeof t.render === 'function') {
     t.render(() => {

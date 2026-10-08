@@ -194,10 +194,15 @@ async function runApplyTemplate(template) {
     }
 
     showSuccessState('Workflow created!');
-    await new Promise((resolve) => setTimeout(resolve, 1200));
-
-    const targetUrl = `./card-templates.html?workflowId=${encodeURIComponent(template.id)}&firstListId=${encodeURIComponent(result.firstListId || '')}`;
-    window.location.href = targetUrl;
+    if (t && typeof t.alert === 'function') {
+      t.alert({
+        message: `${template.title} workflow created with all lists!`,
+        display: 'success',
+        duration: 5,
+      });
+    }
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    closePopup();
   } catch (err) {
     console.error('Template apply failed:', err);
     showErrorState('Something went wrong setting up your workflow. Try again.', template);
