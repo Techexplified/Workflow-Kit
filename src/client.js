@@ -12,6 +12,7 @@ window.TrelloPowerUp.initialize(
         {
           icon: ICON_URL,
           text: 'Workflow Kit',
+          condition: 'always',
           callback: function (t) {
             return t.modal({
               title: 'Workflow Kit',
@@ -29,6 +30,7 @@ window.TrelloPowerUp.initialize(
         {
           icon: CHECKLIST_ICON_URL,
           text: 'Add Checklist',
+          condition: 'always',
           callback: function (t) {
             return t.popup({
               title: 'Add Checklist',
