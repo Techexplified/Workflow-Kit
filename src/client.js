@@ -33,10 +33,11 @@ window.TrelloPowerUp.initialize(
           condition: 'always',
           callback: function (t) {
             return t.modal({
-              title: 'Workflow Kit - Add Checklist',
+              title: 'Workflow Kit',
               url: t.signUrl('./card-templates.html'),
-              fullscreen: true,
               accentColor: '#7C3AED',
+              height: 540,
+              fullscreen: false,
             });
           },
         },

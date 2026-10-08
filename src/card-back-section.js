@@ -64,10 +64,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     addBtn.addEventListener('click', () => {
       if (t && typeof t.modal === 'function') {
         t.modal({
-          title: 'Workflow Kit - Add Checklist',
+          title: 'Workflow Kit',
           url: t.signUrl('./card-templates.html'),
-          fullscreen: true,
           accentColor: '#7C3AED',
+          height: 540,
+          fullscreen: false,
         });
       } else {
         window.open('./card-templates.html', '_blank');
