@@ -37,14 +37,67 @@ const WORKFLOW_TITLES = {
   events: 'Events',
 };
 
+const WORKFLOW_BRAND_CONFIG = {
+  marketing: {
+    bg: '#f5f3ff',
+    color: '#7c3aed',
+    btnBg: '#7c3aed',
+    svg: `
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M21 4.5v12.2a1 1 0 0 1-1.38.93l-5.62-2.34v-8.58l5.62-2.34A1 1 0 0 1 21 4.5zM12 7H4a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h2v4a1 1 0 0 0 1.55.83l3.45-2.3A1 1 0 0 0 12 15.7V7z"/>
+      </svg>
+    `,
+  },
+  'real-estate': {
+    bg: '#eff6ff',
+    color: '#2563eb',
+    btnBg: '#2563eb',
+    svg: `
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 3 2 12h3v8a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1v-8h3L12 3z"/>
+      </svg>
+    `,
+  },
+  events: {
+    bg: '#f0fdf4',
+    color: '#16a34a',
+    btnBg: '#16a34a',
+    svg: `
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M19 4h-1V2h-2v2H8V2H6v2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 16H5V9h14v11z"/>
+        <rect x="7" y="11" width="3" height="3" rx="0.5" fill="currentColor"/>
+        <rect x="11" y="11" width="3" height="3" rx="0.5" fill="currentColor"/>
+        <rect x="15" y="11" width="3" height="3" rx="0.5" fill="currentColor"/>
+        <rect x="7" y="15" width="3" height="3" rx="0.5" fill="currentColor"/>
+        <rect x="11" y="15" width="3" height="3" rx="0.5" fill="currentColor"/>
+        <rect x="15" y="15" width="3" height="3" rx="0.5" fill="currentColor"/>
+      </svg>
+    `,
+  },
+};
+
 const CARD_THEMES = {
+  // Marketing templates
   'product-launch': { bg: '#FFF5F5', border: '#FEE2E2', iconBg: '#FCE7E7' },
   'brand-campaign': { bg: '#F0F7FF', border: '#DBEAFE', iconBg: '#DBEAFE' },
   'content-marketing': { bg: '#F0FDF4', border: '#DCFCE7', iconBg: '#D1FAE5' },
   'event-marketing': { bg: '#FAF5FF', border: '#EDE9FE', iconBg: '#EDE9FE' },
+
+  // Events templates
+  'general-event': { bg: '#FAF5FF', border: '#EDE9FE', iconBg: '#EDE9FE' },
+  'corporate-event': { bg: '#F0F7FF', border: '#DBEAFE', iconBg: '#DBEAFE' },
+  'wedding-event': { bg: '#FDF2F8', border: '#FCE7F3', iconBg: '#FCE7F3' },
+  'party-celebration': { bg: '#FFFBEB', border: '#FEF3C7', iconBg: '#FEF3C7' },
+
+  // Real Estate templates
+  'buyer-journey': { bg: '#F0F7FF', border: '#DBEAFE', iconBg: '#DBEAFE' },
+  'seller-journey': { bg: '#F0FDF4', border: '#DCFCE7', iconBg: '#D1FAE5' },
+  'open-house-event': { bg: '#FFFBEB', border: '#FEF3C7', iconBg: '#FEF3C7' },
+  'rental-property': { bg: '#FAF5FF', border: '#EDE9FE', iconBg: '#EDE9FE' },
 };
 
 const SVG_TEMPLATE_ICONS = {
+  // Marketing
   'product-launch': `
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#E11D48" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/>
@@ -83,6 +136,73 @@ const SVG_TEMPLATE_ICONS = {
       <circle cx="16" cy="17" r="1" fill="currentColor"/>
     </svg>
   `,
+
+  // Events
+  'general-event': `
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+      <line x1="16" y1="2" x2="16" y2="6"/>
+      <line x1="8" y1="2" x2="8" y2="6"/>
+      <line x1="3" y1="10" x2="21" y2="10"/>
+      <path d="m9 16 2 2 4-4"/>
+    </svg>
+  `,
+  'corporate-event': `
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
+      <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+    </svg>
+  `,
+  'wedding-event': `
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#DB2777" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
+    </svg>
+  `,
+  'party-celebration': `
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M5.8 11.3 2 22l10.7-3.79"/>
+      <path d="M4 3h.01"/>
+      <path d="M22 8h.01"/>
+      <path d="M15 2h.01"/>
+      <path d="M22 20h.01"/>
+      <path d="m22 2-2.24.75a2.9 2.9 0 0 0-1.96 3.12v0c.1.86-.57 1.63-1.45 1.63h-.38c-.86 0-1.6.6-1.76 1.44L14 12"/>
+      <path d="m22 13-.82-.33c-.86-.34-1.82.2-1.98 1.11v0c-.11.64-.7 1.08-1.35.98l-.63-.1a1.5 1.5 0 0 0-1.6 2.05L16 17"/>
+    </svg>
+  `,
+
+  // Real Estate
+  'buyer-journey': `
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+      <polyline points="9 22 9 12 15 12 15 22"/>
+    </svg>
+  `,
+  'seller-journey': `
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/>
+      <line x1="7" y1="7" x2="7.01" y2="7"/>
+    </svg>
+  `,
+  'open-house-event': `
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M18 20V6a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v14"/>
+      <path d="M2 20h20"/>
+      <circle cx="14" cy="12" r="1.5" fill="currentColor"/>
+    </svg>
+  `,
+  'rental-property': `
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="4" y="2" width="16" height="20" rx="2" ry="2"/>
+      <line x1="9" y1="22" x2="9" y2="18"/>
+      <line x1="15" y1="22" x2="15" y2="18"/>
+      <line x1="9" y1="6" x2="9.01" y2="6"/>
+      <line x1="15" y1="6" x2="15.01" y2="6"/>
+      <line x1="9" y1="10" x2="9.01" y2="10"/>
+      <line x1="15" y1="10" x2="15.01" y2="10"/>
+      <line x1="9" y1="14" x2="9.01" y2="14"/>
+      <line x1="15" y1="14" x2="15.01" y2="14"/>
+    </svg>
+  `,
 };
 
 function getTemplateIcon(template) {
@@ -92,9 +212,21 @@ function getTemplateIcon(template) {
   return template.icon || '📋';
 }
 
+function updateBrandHeader(workflowId) {
+  const brandConfig = WORKFLOW_BRAND_CONFIG[workflowId];
+  const brandIconEl = document.querySelector('.brand-icon');
+  if (brandConfig && brandIconEl) {
+    brandIconEl.style.backgroundColor = brandConfig.bg;
+    brandIconEl.style.color = brandConfig.color;
+    brandIconEl.innerHTML = brandConfig.svg;
+  }
+}
+
 function renderListView(workflowId) {
   const container = document.getElementById('view-container');
   if (!container) return;
+
+  updateBrandHeader(workflowId);
 
   const headerSubtext = document.getElementById('header-subtext');
   if (headerSubtext) {
@@ -222,6 +354,8 @@ function renderPreviewView(template, workflowId) {
     iconBg: template.iconBg || '#EDE9FE',
   };
 
+  const brandConfig = WORKFLOW_BRAND_CONFIG[workflowId] || { btnBg: '#7c3aed' };
+
   container.innerHTML = `
     <div class="preview-container">
       <div class="preview-badge-row">
@@ -249,7 +383,7 @@ function renderPreviewView(template, workflowId) {
         </svg>
         Back
       </button>
-      <button id="create-card-btn" class="create-card-button">
+      <button id="create-card-btn" class="create-card-button" style="background-color: ${brandConfig.btnBg};">
         Create Card
       </button>
     </div>
