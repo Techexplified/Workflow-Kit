@@ -32,14 +32,26 @@ window.TrelloPowerUp.initialize(
           text: 'Add Checklist',
           condition: 'always',
           callback: function (t) {
-            return t.popup({
-              title: 'Add Checklist',
+            return t.modal({
+              title: 'Workflow Kit - Add Checklist',
               url: t.signUrl('./card-templates.html'),
-              height: 480,
+              fullscreen: true,
+              accentColor: '#7C3AED',
             });
           },
         },
       ];
+    },
+    'card-back-section': function (t, options) {
+      return {
+        title: 'Workflow Kit',
+        icon: ICON_URL,
+        content: {
+          type: 'iframe',
+          url: t.signUrl('./card-back-section.html'),
+          height: 60,
+        },
+      };
     },
   },
   {
