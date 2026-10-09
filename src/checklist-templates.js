@@ -245,40 +245,49 @@ export const checklistTemplatesByWorkflow = {
       description: 'End-to-end event planning, coordination, and wrap-up checklist.',
       checklistsByList: {
         'Planning': [
-          'Define event goals, vision, and theme',
-          'Set overall budget & cost allocation',
-          'Determine date, time, and target attendance',
-          'Form event planning committee & assign roles'
+          'Define event purpose and goals',
+          'Set target audience',
+          'Establish budget',
+          'Choose event date',
+          'Identify key stakeholders',
+          'Get initial approvals'
         ],
         'Logistics': [
-          'Secure venue contract & permits',
-          'Hire caterer, AV crew, and equipment rentals',
-          'Create event floor plan & seating chart',
-          'Arrange transportation and parking logistics'
+          'Book venue',
+          'Arrange catering',
+          'Plan transport and parking',
+          'Confirm AV and technical equipment',
+          'Arrange seating and decor',
+          'Prepare on-site logistics plan'
         ],
         'Marketing': [
-          'Launch event website & ticketing portal',
-          'Design promotional posters & social media banners',
-          'Send email campaign & press release',
-          'Track RSVPs and ticket sales'
+          'Create event landing page',
+          'Send email invitations',
+          'Promote on social media',
+          'Manage registrations',
+          'Coordinate with partners/sponsors'
         ],
         'Execution': [
-          'Oversee day-of setup and vendor deliveries',
-          'Conduct run-through & sound checks',
-          'Manage registration desk & attendee flow',
-          'Coordinate timeline & live event program'
+          'Conduct team briefing',
+          'Set up venue and equipment',
+          'Manage guest check-in',
+          'Run event as per schedule',
+          'Handle on-site issues',
+          'Capture photos and videos'
         ],
         'Post-Event': [
-          'Supervise teardown, cleanup & return rentals',
-          'Settle final invoices with vendors',
-          'Send thank-you emails & attendee survey',
-          'Share event photos & highlight video'
+          'Collect attendee feedback',
+          'Share event photos and recordings',
+          'Send thank you emails',
+          'Analyze event performance',
+          'Prepare final report'
         ],
         'Completed': [
-          'Review survey feedback and attendance metrics',
-          'Reconcile final budget against expenses',
-          'Document learnings for future events',
-          'Archive all event collateral and assets'
+          'Archive event documents',
+          'Share final album link',
+          'Close vendor contract',
+          'Move cards to archive list',
+          'Celebrate with the team'
         ]
       }
     },
@@ -290,40 +299,49 @@ export const checklistTemplatesByWorkflow = {
       description: 'Corporate conference, seminar, and meeting execution checklist.',
       checklistsByList: {
         'Planning': [
-          'Align on business objectives & key messaging',
-          'Establish corporate event budget & approvals',
-          'Set date, format (in-person/hybrid), and location',
-          'Draft master event agenda & speaker outline'
+          'Define event objectives and KPIs',
+          'Identify target audience (employees/clients)',
+          'Set budget and get approvals',
+          'Choose date and venue',
+          'Plan agenda and session structure',
+          'Identify speakers and moderators'
         ],
         'Logistics': [
-          'Contract conference venue & hotel room blocks',
-          'Secure AV production, staging & live streaming',
-          'Book catering (breakfast, lunch, breaks)',
-          'Arrange VIP transportation & speaker green rooms'
+          'Book venue and meeting rooms',
+          'Arrange catering (breakfast/lunch/refreshments)',
+          'Set up AV, projection and live-streaming',
+          'Arrange travel and accommodation (if needed)',
+          'Confirm seating and stage setup',
+          'Prepare on-site logistics plan'
         ],
         'Marketing': [
-          'Launch branded corporate registration page',
-          'Send invitation campaigns to target executives',
-          'Publish speaker lineup on LinkedIn & channels',
-          'Order branded badges, banners, and swag bags'
+          'Create event invitation and landing page',
+          'Send email invites to employees/clients',
+          'Promote via internal channels',
+          'Manage registrations and RSVP',
+          'Share pre-event information (agenda, speakers)'
         ],
         'Execution': [
-          'Manage executive registration & badge pickup',
-          'Coordinate speaker presentations & rehearsals',
-          'Run live stage timing, AV, and Q&A sessions',
-          'Oversee networking breakouts & sponsor booths'
+          'Conduct team briefing',
+          'Speaker check-in and rehearsal',
+          'Manage attendee check-in',
+          'Run sessions as per agenda',
+          'Handle technical support',
+          'Capture photos/videos and live updates'
         ],
         'Post-Event': [
-          'Send post-conference feedback survey',
-          'Share presentation decks & recording links',
-          'Process vendor payments & expense reconciliations',
-          'Consolidate attendee lead list for sales team'
+          'Collect attendee feedback',
+          'Share presentations and recordings',
+          'Send thank you notes',
+          'Measure event success (KPIs)',
+          'Prepare final report and insights'
         ],
         'Completed': [
-          'Present ROI & executive summary report',
-          'Conduct team debrief & identify improvements',
-          'Archive session recordings & attendee data',
-          'Close out corporate project ledger'
+          'Archive event documents',
+          'Share final album link',
+          'Close vendor contract',
+          'Move cards to archive list',
+          'Celebrate with the team'
         ]
       }
     },
@@ -335,40 +353,48 @@ export const checklistTemplatesByWorkflow = {
       description: 'Wedding timeline, vendors, invitations & ceremony checklist.',
       checklistsByList: {
         'Planning': [
-          'Set wedding budget & draft initial guest list',
-          'Choose wedding theme, color palette & style',
-          'Select wedding party members',
-          'Research and tour ceremony & reception venues'
+          'Define wedding vision and theme',
+          'Set budget',
+          'Finalize date and venue',
+          'Create guest list',
+          'Hire wedding planner (if needed)',
+          'Confirm key vendors'
         ],
         'Logistics': [
-          'Book ceremony and reception venues',
-          'Hire photographer, videographer, and DJ/band',
-          'Book florist, caterer, and cake designer',
-          'Arrange guest transportation & hotel room blocks'
+          'Book venue (ceremony + reception)',
+          'Plan catering and menu tastings',
+          'Arrange décor and floral designs',
+          'Confirm photography and videography',
+          'Arrange guest accommodation (if needed)',
+          'Plan transportation'
         ],
         'Marketing': [
-          'Create wedding website & registry',
-          'Design & send save-the-date cards',
-          'Mail formal invitations & track RSVPs',
-          'Order wedding favors, signage, and paper goods'
+          'Send invitations (physical/digital)',
+          'Manage RSVP tracking',
+          'Share wedding website (if any)',
+          'Communicate event details to guests'
         ],
         'Execution': [
-          'Conduct wedding rehearsal & rehearsal dinner',
-          'Coordinate morning hair, makeup & bridal suite',
-          'Manage ceremony timing & processional order',
-          'Oversee reception schedule (toasts, dances, dinner)'
+          'Coordinate with vendors',
+          'Manage guest arrivals and seating',
+          'Oversee ceremony and reception schedule',
+          'Handle last-minute changes',
+          'Ensure smooth event flow',
+          'Capture photos and videos'
         ],
         'Post-Event': [
-          'Ensure gift collection & personal decor return',
-          'Settle final vendor tips and remaining balances',
-          'Send thank-you notes for gifts and attendance',
-          'Review photographer sneak peek gallery'
+          'Send thank you notes to guests',
+          'Share wedding photos and videos',
+          'Settle final vendor payments',
+          'Collect and store important documents',
+          'Plan honeymoon (optional)'
         ],
         'Completed': [
-          'Receive final wedding photo gallery & video',
-          'Preserve wedding dress & keepsake items',
-          'Change legal name & update documentation',
-          'Archive wedding planning binder and memories'
+          'Archive event documents',
+          'Share final album link',
+          'Close vendor contract',
+          'Move cards to archive list',
+          'Celebrate with the team'
         ]
       }
     },
@@ -380,40 +406,44 @@ export const checklistTemplatesByWorkflow = {
       description: 'Birthday, anniversary, and private party planning checklist.',
       checklistsByList: {
         'Planning': [
-          'Choose celebration theme, date, and time',
-          'Determine party budget & guest count',
-          'Pick venue (home, restaurant, or event hall)',
-          'Brainstorm activities, music, and entertainment'
+          'Define occasion and theme',
+          'Set budget',
+          'Choose date and venue (home/venue)',
+          'Create guest list',
+          'Plan activities and entertainment'
         ],
         'Logistics': [
-          'Reserve venue or prep party space',
-          'Order custom celebration cake & desserts',
-          'Plan food menu, beverages, and ice supply',
-          'Rent tables, chairs, or sound equipment if needed'
+          'Arrange food and drinks',
+          'Plan décor and lighting',
+          'Arrange music/DJ/entertainment',
+          'Confirm seating and layout',
+          'Arrange any special requirements (e.g., cake, games)'
         ],
         'Marketing': [
-          'Design & send digital or printed invitations',
-          'Track guest RSVPs and headcount',
-          'Purchase themed decorations, balloons & banners',
-          'Buy matching plates, napkins, cups & tableware'
+          'Send invitations (digital/print)',
+          'Track guest RSVPs',
+          'Share event details (time, venue, dress code)',
+          'Plan social media sharing (optional)'
         ],
         'Execution': [
-          'Decorate venue, set up tables and photo backdrop',
-          'Arrange food and beverage buffet stations',
-          'Curate party music playlist and cue party games',
-          'Greet guests, take group photos, and cut cake'
+          'Set up venue and décor',
+          'Manage guest arrivals',
+          'Coordinate food and entertainment',
+          'Ensure safety and comfort',
+          'Capture photos and videos'
         ],
         'Post-Event': [
-          'Pack up leftover food and party decor',
-          'Clean up venue and dispose of trash',
-          'Return any rented equipment',
-          'Share party photos in shared album'
+          'Share event photos with guests',
+          'Send thank you messages',
+          'Settle any pending payments',
+          'Collect feedback for future events'
         ],
         'Completed': [
-          'Send thank-you messages to all attendees',
-          'Reconcile party expenses',
-          'Save memorable photos to keepsake album',
-          'Document favorite party ideas for next year'
+          'Archive event documents',
+          'Share final album link',
+          'Close vendor contract',
+          'Move cards to archive list',
+          'Celebrate with the team'
         ]
       }
     }
@@ -427,46 +457,52 @@ export const checklistTemplatesByWorkflow = {
       description: 'Buyer consultation, showings, offers, escrow, and closing checklist.',
       checklistsByList: {
         'New Lead': [
-          'Initial contact & intake questionnaire',
-          'Determine buyer timeline & readiness',
-          'Explain agency representation & commission',
-          'Send welcome packet & buyer guide'
+          'Capture inquiry details',
+          'Understand buying needs',
+          'Collect budget range',
+          'Set communication preferences',
+          'Add to follow-up list'
         ],
         'Qualified': [
-          'Obtain mortgage pre-approval letter',
-          'Verify down payment & closing funds',
-          'Establish price range & target neighborhoods',
-          'Execute Exclusive Buyer Brokerage Agreement'
+          'Confirm readiness to buy',
+          'Get pre-approval (or connect with lender)',
+          'Discuss preferred locations',
+          'Define must-haves and nice-to-haves',
+          'Schedule initial consultation'
         ],
         'Property Search': [
-          'Set up automated MLS search portal',
-          'Review matching listings with buyer',
-          'Schedule & conduct property tours',
-          'Evaluate pros/cons of shortlisted properties'
+          'Create property shortlist',
+          'Schedule showings',
+          'Track properties viewed',
+          'Collect client feedback',
+          'Refine search criteria',
+          'Share new listings'
         ],
         'Offer': [
-          'Pull Comparative Market Analysis (CMA)',
-          'Determine offer price & terms',
-          'Prepare purchase contract & disclosures',
-          'Submit offer and negotiate counteroffers'
+          'Review comparable sales',
+          'Prepare offer documents',
+          'Negotiate terms',
+          'Submit offer',
+          'Track offer status'
         ],
         'Under Contract': [
-          'Deliver earnest money deposit',
-          'Schedule home & pest inspections',
-          'Review inspection report & negotiate repairs',
-          'Monitor appraisal & mortgage underwriting'
+          'Complete home inspection',
+          'Review inspection report',
+          'Arrange financing',
+          'Review and sign disclosures',
+          'Meet key deadlines'
         ],
         'Closing': [
-          'Review Closing Disclosure (CD) & settlement statement',
-          'Conduct final property walkthrough',
-          'Wire closing funds',
-          'Attend closing signing & receive keys'
+          'Conduct final walkthrough',
+          'Confirm closing date',
+          'Review closing documents',
+          'Coordinate with lender/title company',
+          'Complete closing'
         ],
-        'Completed': [
-          'Update MLS status to Closed',
-          'Provide utility & change of address guide',
-          'Deliver client closing gift & request review',
-          'Set up 30-day post-closing check-in'
+        'Closed': [
+          'Handover keys',
+          'Share important documents',
+          'Request client feedback/testimonial'
         ]
       }
     },
@@ -478,46 +514,51 @@ export const checklistTemplatesByWorkflow = {
       description: 'CMA valuation, staging, MLS listing, offers, and sale closing checklist.',
       checklistsByList: {
         'New Lead': [
-          'Initial seller consultation & property details',
-          'Understand seller motivation & timeframe',
-          'Gather deed, tax info, and existing mortgage details',
-          'Send pre-listing kit & marketing overview'
+          'Capture seller inquiry',
+          'Collect property details',
+          'Understand selling goals',
+          'Set timeline expectations',
+          'Schedule initial consultation'
         ],
         'Qualified': [
-          'Conduct on-site walkthrough & assessment',
-          'Prepare Comparative Market Analysis (CMA)',
-          'Agree on listing price & marketing strategy',
-          'Execute Exclusive Right to Sell Agreement'
+          'Assess property value (CMA)',
+          'Discuss market conditions',
+          'Confirm seller readiness',
+          'Explain listing process and fees',
+          'Sign representation agreement'
         ],
         'Property Search': [
-          'Provide staging & decluttering recommendations',
-          'Complete seller disclosures & HOA package',
-          'Schedule professional HDR photography & 3D tour',
-          'Create property feature sheet & brochure'
+          'Prepare property for listing',
+          'Arrange staging (if needed)',
+          'Schedule professional photos',
+          'Create listing description',
+          'Finalize listing price'
         ],
         'Offer': [
-          'Review incoming offers & buyer qualifications',
-          'Analyze net proceeds for each offer',
-          'Negotiate counteroffers or multiple offers',
-          'Formally accept winning purchase agreement'
+          'Review incoming offers',
+          'Compare terms with seller',
+          'Negotiate with buyers',
+          'Accept offer',
+          'Notify all parties'
         ],
         'Under Contract': [
-          'Confirm earnest money deposit received',
-          'Facilitate buyer home inspection & appraisal',
-          'Negotiate repair requests (if applicable)',
-          'Monitor buyer loan commitment deadline'
+          'Manage inspections and appraisals',
+          'Handle buyer contingencies',
+          'Coordinate repairs (if needed)',
+          'Track contract deadlines',
+          'Keep seller updated'
         ],
         'Closing': [
-          'Review settlement statement & net proceeds',
-          'Schedule seller move-out & cleaning',
-          'Attend closing or sign remote deed package',
-          'Confirm wire transfer of sales proceeds'
+          'Confirm buyer financing',
+          'Review closing documents',
+          'Coordinate with title company',
+          'Resolve any final issues',
+          'Complete closing'
         ],
-        'Completed': [
-          'Remove yard sign and lockbox',
-          'Mark MLS status as Sold',
-          'Send thank you gift & request testimonial',
-          'File transaction documents in brokerage archive'
+        'Closed': [
+          'Transfer ownership',
+          'Share closing statement',
+          'Request referral and feedback'
         ]
       }
     },
@@ -529,44 +570,49 @@ export const checklistTemplatesByWorkflow = {
       description: 'Open house prep, marketing, visitor sign-in, and agent follow-up.',
       checklistsByList: {
         'New Lead': [
-          'Select open house date & time window',
-          'Obtain seller permission & confirm staging',
-          'Announce event on MLS & major portals',
-          'Schedule social media promotional posts'
+          'Plan open house date and time',
+          'Confirm property details',
+          'Set target audience',
+          'Create event listing',
+          'Start marketing campaign'
         ],
         'Qualified': [
-          'Design & print high-quality property flyers',
-          'Send email blast to local buyer agents',
-          'Place directional signs at key intersections',
-          'Post neighborhood invitations on community boards'
+          'Confirm RSVPs',
+          'Follow up with interested attendees',
+          'Share property details',
+          'Pre-qualify serious buyers',
+          'Prepare attendee list'
         ],
         'Property Search': [
-          'Deep clean property & open window blinds',
-          'Set comfortable temperature & ambient music',
-          'Prepare refreshments & branded water bottles',
-          'Set up sign-in station / digital guest tablet'
+          'Prepare property (cleaning, staging)',
+          'Set up signage and directions',
+          'Arrange brochures and materials',
+          'Test lighting and presentation',
+          'Coordinate staff/agents'
         ],
         'Offer': [
-          'Greet visitors & collect contact info',
-          'Highlight key property features & upgrades',
-          'Provide property disclosure & CMA packets',
-          'Answer questions about neighborhood & schools'
+          'Collect feedback from attendees',
+          'Follow up with interested buyers',
+          'Share additional property information',
+          'Assist with offer preparation',
+          'Track offer status'
         ],
         'Under Contract': [
-          'Send thank-you message to all attendees',
-          'Follow up with interested buyers & their agents',
-          'Deliver detailed feedback report to seller',
-          'Identify active buyers for other matching listings'
+          'Support buyer through contract process',
+          'Share inspection and financing details',
+          'Coordinate with seller and agents',
+          'Track key dates',
+          'Keep attendees updated'
         ],
         'Closing': [
-          'Track any offers originating from open house',
-          'Update open house attendee records',
-          'Settle any event supply or vendor costs'
+          'Confirm deal completion',
+          'Update event records',
+          'Thank attendees and follow up'
         ],
-        'Completed': [
-          'Archive attendee registration log in CRM',
-          'Record open house metrics & visitor count',
-          'Review feedback for future event optimization'
+        'Closed': [
+          'Mark event as completed',
+          'Analyze event performance',
+          'Add leads to long-term nurture list'
         ]
       }
     },
@@ -578,46 +624,49 @@ export const checklistTemplatesByWorkflow = {
       description: 'Tenant screening, lease execution, move-in inspections, and turnover.',
       checklistsByList: {
         'New Lead': [
-          'Verify landlord ownership & property compliance',
-          'Determine optimal market rent rate',
-          'Execute property management / leasing agreement',
-          'Photograph unit and prepare feature description'
+          'Capture rental inquiry',
+          'Collect tenant details',
+          'Understand rental requirements',
+          'Share property information',
+          'Schedule property viewing'
         ],
         'Qualified': [
-          'Publish rental listing across rental portals',
-          'Respond to prospective tenant inquiries',
-          'Pre-screen applicants for income & pets',
-          'Schedule individual and group showings'
+          'Verify tenant identity',
+          'Run background and credit check',
+          'Confirm income and employment',
+          'Check rental history',
+          'Assess tenant fit'
         ],
         'Property Search': [
-          'Host rental open house & property viewings',
-          'Distribute rental applications & fee links',
-          'Collect identification & proof of income',
-          'Answer questions regarding lease terms & rules'
+          'Show property to tenant',
+          'Collect feedback',
+          'Answer questions',
+          'Compare with other properties (if multiple)',
+          'Finalize tenant interest'
         ],
         'Offer': [
-          'Run credit check & background verification',
-          'Contact current/previous landlord references',
-          'Verify employment & income (3x rent standard)',
-          'Present top applicant to landlord for approval'
+          'Send lease agreement',
+          'Negotiate lease terms',
+          'Collect security deposit',
+          'Confirm move-in date'
         ],
         'Under Contract': [
-          'Draft residential lease agreement & disclosures',
-          'Send lease for electronic signatures',
-          'Collect security deposit & first month\'s rent',
-          'Confirm tenant renter\'s insurance policy'
+          'Sign lease agreement',
+          'Collect initial payments',
+          'Set up tenant in system',
+          'Share property rules and documents',
+          'Confirm utilities and access'
         ],
         'Closing': [
-          'Perform move-in walkthrough inspection',
-          'Complete & sign move-in condition checklist',
-          'Hand over keys, fobs, and mailbox keys',
-          'Provide utility transfer instructions & tenant portal login'
+          'Complete move-in checklist',
+          'Handover keys',
+          'Document property condition',
+          'Confirm tenant move-in'
         ],
-        'Completed': [
-          'Archive executed lease & tenant application',
-          'Update accounting ledger with rent & deposit',
-          'Schedule 6-month property condition check',
-          'Add tenant to automated rent collection system'
+        'Closed': [
+          'Mark tenant as active',
+          'Set renewal reminders',
+          'Schedule regular property reviews'
         ]
       }
     }
@@ -666,10 +715,14 @@ export function getChecklistForCategoryAndList(workflowId, categoryId, listName,
     }
 
     // 3. Keyword matching
-    const keywords = ['planning', 'research', 'creation', 'review', 'launch', 'monitor', 'lead', 'qualified', 'search', 'offer', 'contract', 'closing', 'logistics', 'marketing', 'execution', 'post', 'completed'];
+    const keywords = ['planning', 'research', 'creation', 'review', 'launch', 'monitor', 'lead', 'qualified', 'search', 'offer', 'contract', 'closing', 'closed', 'completed', 'logistics', 'marketing', 'execution', 'post'];
     for (const kw of keywords) {
       if (cleanName.includes(kw)) {
-        const matchedKey = listKeys.find((k) => k.toLowerCase().includes(kw));
+        let matchedKey = listKeys.find((k) => k.toLowerCase().includes(kw));
+        // Handle alias between completed and closed
+        if (!matchedKey && (kw === 'completed' || kw === 'closed')) {
+          matchedKey = listKeys.find((k) => k.toLowerCase() === 'closed' || k.toLowerCase() === 'completed');
+        }
         if (matchedKey) {
           return {
             checklist: category.checklistsByList[matchedKey],

@@ -32,7 +32,7 @@ export const workflowTemplates = [
       'Offer',
       'Under Contract',
       'Closing',
-      'Completed'
+      'Closed'
     ]
   },
   {
