@@ -21,8 +21,6 @@ export async function addChecklistToExistingCard(t, cardId, checklistName, check
   const token = await getAuthorizedToken(t);
   const nameToUse = checklistName || 'Checklist';
 
-  console.log(`Adding checklist "${nameToUse}" to existing card ID ${cardId}...`);
-
   // 1. Create Checklist on the Card
   const checklistUrl = `https://api.trello.com/1/checklists?key=${TRELLO_APP_KEY}&token=${token}&idCard=${cardId}&name=${encodeURIComponent(nameToUse)}`;
   const checklistRes = await fetch(checklistUrl, {
@@ -38,7 +36,6 @@ export async function addChecklistToExistingCard(t, cardId, checklistName, check
   }
 
   const checklist = await checklistRes.json();
-  console.log('Checklist created successfully:', checklist.id);
 
   // 2. Add Checklist Items sequentially to preserve order
   const items = Array.isArray(checklistItems) ? checklistItems : [];
@@ -57,7 +54,6 @@ export async function addChecklistToExistingCard(t, cardId, checklistName, check
     }
   }
 
-  console.log(`Successfully added ${items.length} checklist items to checklist "${nameToUse}"`);
   return checklist;
 }
 
@@ -73,15 +69,12 @@ export async function createCardWithChecklist(t, listId, template) {
     typeof targetListId !== 'string' ||
     targetListId.trim() === ''
   ) {
-    console.log('listId not provided or invalid, fetching open lists from board...');
     const openLists = await getOpenLists(t);
     if (!openLists || openLists.length === 0) {
       throw new Error('No open lists found on this board to place the card in.');
     }
     targetListId = openLists[0].id;
   }
-
-  console.log(`Creating card "${template.title}" in list ID ${targetListId}...`);
 
   // 1. Create Card
   const cardUrl = `https://api.trello.com/1/cards?key=${TRELLO_APP_KEY}&token=${token}&idList=${targetListId}&name=${encodeURIComponent(template.title)}`;
@@ -98,7 +91,6 @@ export async function createCardWithChecklist(t, listId, template) {
   }
 
   const card = await cardRes.json();
-  console.log('Card created successfully:', card.id, card.name);
 
   // 2. Create Checklist on the Card
   const checklistTitle = template.checklistTitle || 'Checklist';
@@ -116,7 +108,6 @@ export async function createCardWithChecklist(t, listId, template) {
   }
 
   const checklist = await checklistRes.json();
-  console.log('Checklist created successfully:', checklist.id);
 
   // 3. Add Checklist Items sequentially to preserve order
   const checklistItems = Array.isArray(template.checklist) ? template.checklist : [];
@@ -135,6 +126,5 @@ export async function createCardWithChecklist(t, listId, template) {
     }
   }
 
-  console.log(`Successfully added ${checklistItems.length} checklist items to card "${card.name}"`);
   return card;
 }
